@@ -7,33 +7,36 @@ import './App.css';
 //once clicked you want to delete the item from that array. 
 
 function App() {
-  const [task, setTask] = useState([]);
+  const [todoList, setTodoList] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
   const handleClick = (event) => {
     setInputValue(event.target.value);
   }
 
-  const handleText = () => {
-    const newTask = [...task, inputValue];
-    setTask(newTask);
+  const addTask = () => {
+    const task = {
+      id: todoList.length === 0 ? 1 : todoList[todoList.length - 1].id + 1,
+      taskName: inputValue
+    };
+    setTodoList([...todoList, task]);
   }
 
-  const handleDelete = () => {
-
+  const handleDelete = (id) => {
+    setTodoList(todoList.filter((task) => task.id !== id));
   }
 
   return (
     <div className="App">
       <input className="input" onChange={handleClick}/>
-      <button className="btn" onClick={handleText}>
+      <button className="btn" onClick={addTask}>
         Send
       </button>
-      {task.map(item =>{
+      {todoList.map(item =>{
         return (
           <>
-          <h1>{item}</h1>
-          <button onClick={handleDelete}>X</button>
+          <h1>{item.taskName}</h1>
+          <button onClick={() => handleDelete(item.id)}>X</button>
           </>
         )
       })}
